@@ -27,6 +27,7 @@ export const useForm = ( initialForm = {}, formValidations = {} ) => {
 
     const onInputChange = ({ target }) => {
         const { name, value } = target;
+
         setFormState({
             ...formState,
             [ name ]: value
@@ -47,7 +48,7 @@ export const useForm = ( initialForm = {}, formValidations = {} ) => {
             formCheckedValues[`${ formField }Valid`] = fn( formState[formField] ) ? null : errorMessage; // crea en mi objeto formCheckedValues una propiedad computada: emailValid, passwordValid...
             
             // console.log( formState[formField] ) = esto me devuelve los valores ingresados en cada input, es decir mer@google.com, 123456, Mer Villecco
-        
+
             // console.log(formCheckedValues) = { emailValid: null, passwordValid: null, displayNameValid: null }
         }
         

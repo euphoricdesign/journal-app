@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
-import { Grid, Typography, TextField, Button, Link } from '@mui/material'
+import { Grid, Typography, TextField, Button, Link, Alert } from '@mui/material'
 import { AuthLayout } from '../layout/AuthLayout'
 import { useForm } from '../../hooks'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { startCreatingUserWithEmailPassword } from '../../store/auth'
 
 
@@ -26,6 +26,11 @@ export const RegisterPage = () => {
     const dispatch = useDispatch()
 
     const [formSubmitted, setFormSubmitted] = useState(false); // fue el formulario enviado? 
+  
+
+    const { status, errorMessage } = useSelector( state => state.auth )
+    
+    const isCheckingAuthentication = useMemo( () => status === 'checking', [ status ] )
 
     const { 
         formState ,displayName ,email, password, onInputChange,
@@ -42,10 +47,12 @@ export const RegisterPage = () => {
 
     }
     
+    console.log(!!displayNameValid);
+    // console.log(formSubmitted);
 
     return (
          <AuthLayout title='Crear cuenta'>
-             <form onSubmit={ onSubmit }>
+             <form onSubmit={ onSubmit } className='animate__animated animate__fadeIn animate__faster' >
                 <Grid container>
                     <Grid item xs={12} sx={{mt: 2}}>
                         <TextField
@@ -88,8 +95,14 @@ export const RegisterPage = () => {
                     </Grid>
 
                     <Grid container spacing={2} sx={{mb: 2, mt: 1}}>
+                        <Grid item xs={12} display={ !!errorMessage ? '' : 'none'}>
+                            <Alert severity='error'>
+                                { errorMessage }
+                            </Alert>
+                        </Grid>
+                        
                         <Grid item xs={12}>
-                            <Button type='submit' variant='contained' fullWidth>
+                            <Button disabled={ isCheckingAuthentication } type='submit' variant='contained' fullWidth>
                                 <Typography>Crear cuenta</Typography>
                             </Button>
                         </Grid>
