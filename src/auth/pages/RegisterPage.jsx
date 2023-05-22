@@ -46,9 +46,6 @@ export const RegisterPage = () => {
         dispatch( startCreatingUserWithEmailPassword( formState ) )
 
     }
-    
-    console.log(!!displayNameValid);
-    // console.log(formSubmitted);
 
     return (
          <AuthLayout title='Crear cuenta'>

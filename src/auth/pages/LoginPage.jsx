@@ -9,19 +9,21 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { startGoogleSignIn, startLoginWithEmailPassword } from '../../store/auth'
 
+const formData = {
+    email: '',
+    password: ''
+}
+
 export const LoginPage = () => {
 
     const { status, errorMessage } = useSelector( state => state.auth )
 
     const dispatch = useDispatch()
 
-    const { email, password, onInputChange } = useForm({
-        email: '',
-        password: ''
-    })
+    const { email, password, onInputChange } = useForm( formData )
 
 
-    const isAuthenticated = useMemo( () => status === 'checking', [ status ] )
+    const isAuthenticated = useMemo( () => status === 'checking', [ status ] ) // true o false 
 
     const onSubmit = (e) => {
         e.preventDefault()
@@ -30,7 +32,6 @@ export const LoginPage = () => {
     }
 
     const onGoogleSignIn = (e) => {
-        // console.log('onGoogleSignIn');
 
         dispatch( startGoogleSignIn() )
     }

@@ -5,6 +5,7 @@ import { onAuthStateChanged } from 'firebase/auth'
 import { FirebaseAuth } from '../firebase/config'
 
 import { login, logout } from '../store/auth'
+import { startLoadingNotes } from '../store/journal'
 
 export const useCheckAuth = () => {
     
@@ -21,13 +22,15 @@ export const useCheckAuth = () => {
             const { uid, email, displayName, photoURL } = user
 
             dispatch( login({ uid, email, displayName, photoURL }) )
+            dispatch( startLoadingNotes() )
         })
 
-        // Esta función nos devuelve algo que se conoce como un Obsevable, una función que esta emitiendo valores 
-        // Cuando el estado de la app cambia esta función se va a volver a disparar una y otra vez
-        // En teoría, cuando tenemos una func de este tipo, que esta regresando muchas emisiones idealmente vamos a querer 
-        // limpiarla, pero en este caso no voy a querer limpiarla en ningun momento porque siempre quiero estar pendiente
-        // del cambio en la autenticación 
+        // El método onAuthStateChanged de Firebase es un método que permite establecer un observador en el estado de autenticación del usuario en la aplicación.
+        // Este método devuelve un objeto firebase.Unsubscribe que permite detener la escucha de cambios en el estado de autenticación del usuario, pero en este 
+        // caso no voy a querer detenerla en ningun momento porque siempre quiero estar pendiente del cambio en la autenticación.
+
+        // Además, este método también puede llamar a un callback cada vez que cambia el estado de autenticación del usuario. 
+        // Este callback recibe un solo argumento, que es el objeto de usuario actualmente autenticado o null si no hay ningún usuario autenticado en la aplicación.
     }, [] )
 
     

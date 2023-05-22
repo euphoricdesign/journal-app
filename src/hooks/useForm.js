@@ -9,6 +9,10 @@ export const useForm = ( initialForm = {}, formValidations = {} ) => {
         createValidators();
     }, [ formState ])
 
+    useEffect(() => { // si el formulario inicial cambia vuelve a llamar setState
+        setFormState( initialForm )
+    }, [ initialForm ]) 
+
     const isFormValid = useMemo( () => {
 
         // la función isFormValid tiene que retornar true o false dependiendo de si mi formulario es valido o no lo es 
